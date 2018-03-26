@@ -37,11 +37,14 @@ func main() {
 	const (
 		defaultPort        = "9090"
 		defaultPortUsage   = "default server port"
+		defaultServer      = ""
+		defaultServerUsage = "default server address"
 		defaultTarget      = "http://127.0.0.1:8080"
 		defaultTargetUsage = "default target port"
 	)
 
 	port := flag.String("port", defaultPort, defaultPortUsage)
+	server := flag.String("server", defaultServer, defaultServerUsage)
 	targetURL := flag.String("targetURL", defaultTarget, defaultTargetUsage)
 
 	flag.Parse()
@@ -54,7 +57,7 @@ func main() {
 
 	http.HandleFunc("/", proxy.handle)
 	//log.Fatal(http.ListenAndServe(":"+*port, nil))
-	log.Fatal(http.ListenAndServeTLS(":"+*port, "server.crt", "server.key", nil))
+	log.Fatal(http.ListenAndServeTLS(*server+":"+*port, "cert.crt", "cert.key", nil))
 }
 
 func NewProxy(target string) *Prox {
